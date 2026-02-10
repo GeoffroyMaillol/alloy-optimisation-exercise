@@ -1,0 +1,8 @@
+[
+  { "Element": "Cr", "CreepCoefficient": 2.0911350e+16, "Cost": 14, "Min": 14.5, "Max": 22.0, "Step": 0.5 },
+  { "Element": "Co", "CreepCoefficient": 7.2380280e+16, "Cost": 80.5, "Min": 0, "Max": 25.0, "Step": 1.0 },
+  { "Element": "Nb", "CreepCoefficient": 1.0352738e+16, "Cost": 42.5, "Min": 0, "Max": 1.5, "Step": 0.1 },
+  { "Element": "Mo", "CreepCoefficient": 8.9124547e+16, "Cost": 16, "Min": 1.50, "Max": 6.0, "Step": 0.5 },
+  { "Element": "Ni", "CreepCoefficient": null, "Cost": 8.9, "Min": 0, "Max": 100, "Step": 0 }
+]
+

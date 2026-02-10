@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="AlloyOptimisation.Cli/AlloyOptimisation.Cli.csproj" />
+  <Project Path="AlloyOptimisation.Core/AlloyOptimisation.Core.csproj" />
+  <Project Path="AlloyOptimisation.Tests/AlloyOptimisation.Tests.csproj" />
+</Solution>
