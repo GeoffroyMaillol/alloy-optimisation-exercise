@@ -64,7 +64,8 @@ public class Alloy
     /// <returns>the composition's residual percentage</returns>
     private decimal GetCompositionBalance()
     {
-        return 100 - _composition.Sum(e => e.AtomicPercentage);
+        var balance = 100 - _composition.Sum(e => e.AtomicPercentage);
+        return balance >= 0 ? balance : throw new AlloyException("Base component balance is negative, composition is not valid.");
     }
     
     /// <summary>
@@ -82,20 +83,39 @@ public class Alloy
     /// </summary>
     /// <param name="componentElement">The atomic symbol of the element, e.g. "Ni" for nickel</param>
     /// <param name="atomicPercentage">The desired atomic percentage</param>
-    public void UpdateComponent(string componentElement, decimal atomicPercentage)
+    public bool TryUpdateComponent(string componentElement, decimal atomicPercentage)
     {
         ValidateNewComponent(componentElement, atomicPercentage);
-        var existingElementComponent = _composition.Where(e => e.Element == componentElement).ElementAtOrDefault(0);
-        if (existingElementComponent != null)
+        if (CanAddComponent(componentElement, atomicPercentage))
         {
-            _composition.Remove(existingElementComponent);
-        }
+            var existingElementComponent = _composition.Where(e => e.Element == componentElement).ElementAtOrDefault(0);
+            if (existingElementComponent != null)
+            {
+                _composition.Remove(existingElementComponent);
+            }
 
-        if (atomicPercentage > 0)
-        {
-            _composition.Add(new AlloyComponent(componentElement, atomicPercentage));
+            if (atomicPercentage > 0)
+            {
+                _composition.Add(new AlloyComponent(componentElement, atomicPercentage));
+            }
+            SetBaseElementRatio();
+            return true;
         }
-        SetBaseElementRatio();
+        return false;
+    }
+
+    /// <summary>
+    /// Check that the new atomic percentage will not bring the total abov 100%
+    /// </summary>
+    /// <param name="componentElement">the element to update</param>
+    /// <param name="atomicPercentage">the new atomic percentage</param>
+    /// <returns>true if the atomic percentage is valid, false otherwise</returns>
+    private bool CanAddComponent(string componentElement, decimal atomicPercentage)
+    {
+        var sumOfOtherComponents = _composition.Where(
+                element => element.Element != componentElement && element.Element != GetBaseElement()
+            ).Sum(element => element.AtomicPercentage);
+        return sumOfOtherComponents + atomicPercentage <= 100;
     }
 
     /// <summary>

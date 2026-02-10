@@ -29,8 +29,8 @@ public class AlloyOptimiserTests
         var testCostConstraint = 18;
         var alloyOptimiser = new AlloyOptimiser(_config);
         var alloy = alloyOptimiser.GetOptimumAlloy(testCostConstraint);
-        Assert.Equal(1729987793800000000m, alloy.GetCreepResistance());
-        Assert.True(testCostConstraint >= alloy.GetCost());
+        Assert.Equal(1729987793800000000m, alloy?.GetCreepResistance());
+        Assert.True(testCostConstraint >= alloy?.GetCost());
     }
 
     [Fact]
